@@ -1,0 +1,31 @@
+# openclaw-security-audit config (example)
+# Save as: reports/security/audit-config.yaml  (or pass --config)
+
+# Optional: declare what you EXPECT to be public-facing.
+expect:
+  # If set, report will flag unexpected public ports.
+  allowed_public_tcp_ports: [22, 80, 443]
+  allowed_public_udp_ports: []
+
+# Optional checks toggles ("auto" means best-effort detect)
+optional:
+  proxy_tunnel_services: auto   # include findings for xray/sing-box/cloudflared/frp/tailscale etc.
+  scan_nginx: auto
+  scan_apache: auto
+  scan_caddy: auto
+
+# Pattern scanning (extendable)
+patterns:
+  url_credentials:
+    - "token="
+    - "gatewayUrl="
+    - "key="
+    - "secret="
+    - "Authorization"
+
+# Paths to scan (best-effort)
+paths:
+  extra_config_globs:
+    - "/etc/caddy/**/*"
+    - "/etc/nginx/**/*"
+    - "/etc/apache2/**/*"
